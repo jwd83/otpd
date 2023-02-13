@@ -40,6 +40,34 @@ def copeland_erdos_digit(n):
         num += 1
 
 
+def liouville_digit_b(n):
+    """Compute the n-th digit of the Liouville constant."""
+    # Compute the number of digits in the block containing the n-th digit
+    block_size = 1
+    while True:
+        factorial = 1
+        for i in range(1, block_size):
+            factorial *= i
+            if factorial > n:
+                break
+        if factorial > n:
+            break
+        block_size += 1
+
+    # Compute the starting position and ending position of the block containing the n-th digit
+    block_start = 10 ** (block_size - 1)
+    block_end = block_start + (2 ** ((block_size - 1) // 2) - 1)
+
+    # Compute the number of complete blocks of digits before the block containing the n-th digit
+    num_complete_blocks = 0
+    for k in range(1, block_size):
+        num_complete_blocks += (n // (2 ** k)) * (10 ** (2 ** k - 1))
+
+    # Compute the digits in the block containing the n-th digit using modular exponentiation
+    remaining_digits = n - num_complete_blocks - (block_start - 1)
+    return (10 ** (block_size - 1) + (remaining_digits - 1) // (block_size - 1)) // (10 ** ((block_size - 1) - (remaining_digits % (block_size - 1)))) % 10
+
+
 def champernowne_digit(n, cache={}):
     """
     Compute the n-th digit of the Champernowne constant.
@@ -97,6 +125,11 @@ for i in range(1, loops):
     sum += liouville_digit(base + 1) * 10
     sum += liouville_digit(base + 2) * 100
     sum += liouville_digit(base + 3) * 1000
+
+    # sum = liouville_digit_b(base) * 1
+    # sum += liouville_digit_b(base + 1) * 10
+    # sum += liouville_digit_b(base + 2) * 100
+    # sum += liouville_digit_b(base + 3) * 1000
 
     # sum = champernowne_digit(base, cache) * 1
     # sum += champernowne_digit(base + 1, cache) * 10
