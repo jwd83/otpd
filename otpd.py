@@ -1,6 +1,9 @@
 
 import sys
 
+# look at optimizing this function. we can return the i and factorial to the caller
+# and have them supply these to more efficiently compute the next liouville digit
+
 
 def liouville_digit(n):
     """Compute the n-th digit of the Liouville constant."""
